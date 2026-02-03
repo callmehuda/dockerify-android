@@ -13,7 +13,7 @@ services:
       - ./first-boot.sh:/root/first-boot.sh
     environment:
       DNS: one.one.one.one
-      # RAM_SIZE: 4096
+      RAM_SIZE: 8192
       # Optional screen resolution in WIDTHxHEIGHT format
       #SCREEN_RESOLUTION: 720x720
       # Optional screen density (dpi)
