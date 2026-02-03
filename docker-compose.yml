@@ -10,6 +10,7 @@ services:
     volumes:
       - ./data:/data
       - ./extras:/extras
+      - ./first-boot.sh:/root/first-boot.sh
     environment:
       DNS: one.one.one.one
       # RAM_SIZE: 4096
