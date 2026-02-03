@@ -33,7 +33,7 @@ services:
         condition: service_healthy
     command: >
       sh -c "
-        adb connect dockerify-android:5555 &&
+        adb connect localhost:5555 &&
         npm start
       "
 
