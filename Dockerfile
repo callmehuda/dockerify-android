@@ -66,11 +66,11 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Copy the first-boot script
 COPY first-boot.sh /root/first-boot.sh
-RUN chmod +x /root/first-boot.sh
+RUN chmod 777 /root/first-boot.sh
 
 # Copy the start-emulator script
 COPY start-emulator.sh /root/start-emulator.sh
-RUN chmod +x /root/start-emulator.sh
+RUN chmod 777 /root/start-emulator.sh
 
 # Expose necessary ports
 EXPOSE 5554 5555
