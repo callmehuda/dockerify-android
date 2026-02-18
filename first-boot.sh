@@ -44,7 +44,7 @@ prepare_system() {
 install_gapps() {
   prepare_system
   echo "Installing GAPPS ..."
-  wget https://phoenixnap.dl.sourceforge.net/project/opengapps/x86_64/20220503/open_gapps-x86_64-11.0-pico-20220503.zip?viasf=1 -O gapps-11.zip
+  wget https://phoenixnap.dl.sourceforge.net/project/opengapps/x86_64/20220503/open_gapps-x86_64-12.0-pico-20220503.zip?viasf=1 -O gapps-11.zip
   unzip gapps-11.zip 'Core/*' -d gapps-11 && rm gapps-11.zip
   rm gapps-11/Core/setup*
   lzip -d gapps-11/Core/*.lz
@@ -66,8 +66,8 @@ install_root() {
   git clone https://gitlab.com/newbit/rootAVD.git
   pushd rootAVD
   sed -i 's/read -t 10 choice/choice=1/' rootAVD.sh
-  ./rootAVD.sh system-images/android-30/default/x86_64/ramdisk.img
-  cp /opt/android-sdk/system-images/android-30/default/x86_64/ramdisk.img /data/android.avd/ramdisk.img
+  ./rootAVD.sh system-images/android-31/default/x86_64/ramdisk.img
+  cp /opt/android-sdk/system-images/android-31/default/x86_64/ramdisk.img /data/android.avd/ramdisk.img
   popd
   echo "Root Done"
   sleep 10
@@ -102,7 +102,7 @@ if [ -f /data/.first-boot-done ]; then
 fi
 
 echo "Init AVD ..."
-echo "no" | avdmanager create avd -n android -k "system-images;android-30;default;x86_64"
+echo "no" | avdmanager create avd -n android -k "system-images;android-31;default;x86_64"
 
 [ "$gapps_needed" = true ] && install_gapps && [ "$root_needed" = false ] && adb reboot
 [ "$root_needed" = true ] && install_root
