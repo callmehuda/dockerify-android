@@ -14,14 +14,13 @@ fi
 # Path to the AVD config
 CONFIG_FILE="/data/android.avd/config.ini"
 
-Update_config() {
+update_config() {
   local key="$1"
   local value="$2"
-.
-  if grep -q "^$key *=" "$CONFIG_FILE"; then
-    sed -i "s/^$key *=.*/$key = $value/" "$CONFIG_FILE"
+  if grep -q "^$key=" "$CONFIG_FILE"; then
+    sed -i "s/^$key=.*/$key=$value/" "$CONFIG_FILE"
   else
-    echo "$key = $value" >> "$CONFIG_FILE"
+    echo "$key=$value" >> "$CONFIG_FILE"
   fi
 }
 
