@@ -14,6 +14,7 @@ RUN apt-get update >/dev/null && \
         qemu-kvm \
         iproute2 \
         socat \
+        xz-utils \
         tzdata >/dev/null && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
