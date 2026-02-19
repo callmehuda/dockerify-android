@@ -16,7 +16,7 @@ RUN apt-get update && \
         socat \
         tzdata && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* > /dev/null
 
 # Set up Android SDK
 RUN mkdir -p /opt/android-sdk/cmdline-tools && \
@@ -25,7 +25,7 @@ RUN mkdir -p /opt/android-sdk/cmdline-tools && \
     unzip cmdline-tools.zip -d latest && \
     rm cmdline-tools.zip && \
     mv latest/cmdline-tools/* latest/ || true && \
-    rm -rf latest/cmdline-tools || true
+    rm -rf latest/cmdline-tools || true > /dev/null
 
 ENV ANDROID_HOME=/opt/android-sdk
 ENV ANDROID_AVD_HOME=/data

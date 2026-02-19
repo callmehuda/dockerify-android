@@ -31,7 +31,7 @@ if [ -f "$CONFIG_FILE" ]; then
     HEIGHT=${SCREEN_RESOLUTION#*x}
     update_config "hw.lcd.width" "$WIDTH"
     update_config "hw.lcd.height" "$HEIGHT"
-    cat ~/.android/avd/android.avd/config.ini | grep -E "hw.ramSize|disk.dataPartition.size"
+    update_config "disk.dataPartition.size" "65536MB"
   fi
   if [ -n "$SCREEN_DENSITY" ]; then
     update_config "hw.lcd.density" "$SCREEN_DENSITY"
@@ -39,4 +39,4 @@ if [ -f "$CONFIG_FILE" ]; then
 fi
 
 # Start the emulator with the appropriate ramdisk.img
-/opt/android-sdk/emulator/emulator -avd android -nojni -netfast -writable-system -no-window -no-audio -no-boot-anim -skip-adb-auth -gpu swiftshader_indirect -no-snapshot -no-metrics $RAMDISK -qemu -m ${RAM_SIZE:-4096}
+/opt/android-sdk/emulator/emulator -avd android -nojni -netfast -writable-system -no-window -no-audio -no-boot-anim -skip-adb-auth -gpu swiftshader_indirect -no-snapshot -no-metrics $RAMDISK -partition-size {PARTITION_SIZE:-4096} -memory ${RAM_SIZE:-4096} -qemu -m ${RAM_SIZE:-4096}

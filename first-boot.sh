@@ -44,7 +44,7 @@ prepare_system() {
 install_libhoudini() {
   echo "Installing Libhoudini..."
   prepare_system
-  wget "https://github.com/rote66/vendor_intel_proprietary_houdini/archive/debc3dc91cf12b5c5b8a1c546a5b0b7bf7f838a8.zip" -O libhoudini.zip
+  wget -q "https://github.com/rote66/vendor_intel_proprietary_houdini/archive/debc3dc91cf12b5c5b8a1c546a5b0b7bf7f838a8.zip" -O libhoudini.zip
   unzip libhoudini.zip -d houdini_temp > /dev/null
   HOUDINI_DIR=$(ls -d houdini_temp/vendor_intel_proprietary_houdini-*)
   adb push "$HOUDINI_DIR/prebuilts/." /system/ > /dev/null
@@ -85,17 +85,11 @@ EOF
 install_gapps() {
   prepare_system
   echo "Installing GAPPS ..."
-  wget 'https://downloads.sourceforge.net/project/litegapps/litegapps/x86_64/34/core/2024-10-29/LiteGapps-core-x86_64-14.0-20241029-official.zip?ts=gAAAAABplqw3v7aVJ5yp7ESECmqyyG0Y7mpsEs1-kLGFwaUNNvbY7vfHYNF_vAXSPqmMxx2vPKbQDPOjl9Sbex1xIaa65FvPtg%3D%3D&use_mirror=master&r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Flitegapps%2Ffiles%2Flitegapps%2Fx86_64%2F34%2Fcore%2F2024-10-29%2FLiteGapps-core-x86_64-14.0-20241029-official.zip%2Fdownload' -O gapps-14.zip
-  unzip gapps-14.zip 'Core/*' -d gapps-14 && rm gapps-14.zip
-  rm gapps-14/Core/setup*
-  lzip -d gapps-14/Core/*.lz
-  for f in gapps-14/Core/*.tar; do
-    tar -x --strip-components 2 -f "$f" -C gapps-14
-  done
-  adb push gapps-14/etc /system
-  adb push gapps-14/framework /system
-  adb push gapps-14/app /system
-  adb push gapps-14/priv-app /system
+  wget -q 'https://downloads.sourceforge.net/project/litegapps/litegapps/x86_64/34/core/2024-10-29/LiteGapps-core-x86_64-14.0-20241029-official.zip?ts=gAAAAABplqw3v7aVJ5yp7ESECmqyyG0Y7mpsEs1-kLGFwaUNNvbY7vfHYNF_vAXSPqmMxx2vPKbQDPOjl9Sbex1xIaa65FvPtg%3D%3D&use_mirror=master&r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Flitegapps%2Ffiles%2Flitegapps%2Fx86_64%2F34%2Fcore%2F2024-10-29%2FLiteGapps-core-x86_64-14.0-20241029-official.zip%2Fdownload' -O gapps-14.zip
+  unzip gapps-14.zip -d gapps-14 && rm gapps-14.zip
+  tar -xvf gapps-14/files/files.tar.xz -C gapps-14/appunpack
+  
+  adb push gapps-14/appunpack/x86_64/34/system/. /system/
   rm -r gapps-14
   touch /data/.gapps-done
 }
