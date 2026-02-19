@@ -2,7 +2,7 @@
 services:
   dockerify-android:
     container_name: dockerify-android
-    image: shmayro/dockerify-android:latest
+    #image: shmayro/dockerify-android:latest
     build:
       context: .
     ports:
