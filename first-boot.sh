@@ -45,9 +45,9 @@ install_libhoudini() {
   echo "Installing Libhoudini..."
   prepare_system
   wget "https://github.com/rote66/vendor_intel_proprietary_houdini/archive/debc3dc91cf12b5c5b8a1c546a5b0b7bf7f838a8.zip" -O libhoudini.zip
-  unzip libhoudini.zip -d houdini_temp
+  unzip libhoudini.zip -d houdini_temp > /dev/null
   HOUDINI_DIR=$(ls -d houdini_temp/vendor_intel_proprietary_houdini-*)
-  adb push "$HOUDINI_DIR/prebuilts/." /system/
+  adb push "$HOUDINI_DIR/prebuilts/." /system/ > /dev/null
   echo "Libhoudini copied. Cleaning up..."
   rm -rf libhoudini.zip houdini_temp
   cat <<'EOF' > houdini.rc

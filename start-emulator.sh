@@ -31,6 +31,7 @@ if [ -f "$CONFIG_FILE" ]; then
     HEIGHT=${SCREEN_RESOLUTION#*x}
     update_config "hw.lcd.width" "$WIDTH"
     update_config "hw.lcd.height" "$HEIGHT"
+    cat ~/.android/avd/android.avd/config.ini | grep -E "hw.ramSize|disk.dataPartition.size"
   fi
   if [ -n "$SCREEN_DENSITY" ]; then
     update_config "hw.lcd.density" "$SCREEN_DENSITY"
