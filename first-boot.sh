@@ -41,21 +41,62 @@ prepare_system() {
   adb remount
 }
 
+install_libhoudini() {
+  echo "Installing Libhoudini..."
+  prepare_system
+  wget "https://github.com/rote66/vendor_intel_proprietary_houdini/archive/debc3dc91cf12b5c5b8a1c546a5b0b7bf7f838a8.zip" -O libhoudini.zip
+  unzip libhoudini.zip -d houdini_temp
+  HOUDINI_DIR=$(ls -d houdini_temp/vendor_intel_proprietary_houdini-*)
+  adb push "$HOUDINI_DIR/prebuilts/." /system/
+  echo "Libhoudini copied. Cleaning up..."
+  rm -rf libhoudini.zip houdini_temp
+  cat <<'EOF' > houdini.rc
+on early-init
+    mount binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
+
+on property:ro.enable.native.bridge.exec=1
+    copy /system/etc/binfmt_misc/arm_exe /proc/sys/fs/binfmt_misc/register
+    copy /system/etc/binfmt_misc/arm_dyn /proc/sys/fs/binfmt_misc/register
+
+on property:ro.enable.native.bridge.exec64=1
+    copy /system/etc/binfmt_misc/arm64_exe /proc/sys/fs/binfmt_misc/register
+    copy /system/etc/binfmt_misc/arm64_dyn /proc/sys/fs/binfmt_misc/register
+
+on property:sys.boot_completed=1
+    exec -- /system/bin/sh -c "echo ':arm_exe:M::\\\\x7f\\\\x45\\\\x4c\\\\x46\\\\x01\\\\x01\\\\x01\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x02\\\\x00\\\\x28::/system/bin/houdini:P' >> /proc/sys/fs/binfmt_misc/register"
+    exec -- /system/bin/sh -c "echo ':arm_dyn:M::\\\\x7f\\\\x45\\\\x4c\\\\x46\\\\x01\\\\x01\\\\x01\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x03\\\\x00\\\\x28::/system/bin/houdini:P' >> /proc/sys/fs/binfmt_misc/register"
+    exec -- /system/bin/sh -c "echo ':arm64_exe:M::\\\\x7f\\\\x45\\\\x4c\\\\x46\\\\x02\\\\x01\\\\x01\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x02\\\\x00\\\\xb7::/system/bin/houdini64:P' >> /proc/sys/fs/binfmt_misc/register"
+    exec -- /system/bin/sh -c "echo ':arm64_dyn:M::\\\\x7f\\\\x45\\\\x4c\\\\x46\\\\x02\\\\x01\\\\x01\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x00\\\\x03\\\\x00\\\\xb7::/system/bin/houdini64:P' >> /proc/sys/fs/binfmt_misc/register"
+EOF
+
+  adb push houdini.rc /system/etc/init/houdini.rc
+  echo "Setting permissions..."
+  adb shell chmod 644 /system/etc/init/houdini.rc
+  adb shell chmod +x /system/bin/houdini
+  adb shell chmod +x /system/bin/houdini64
+  adb shell chmod -R 644 /system/lib/arm/
+  [ -d "$HOUDINI_DIR/prebuilts/lib64" ] && adb shell chmod -R 644 /system/lib64/arm64/
+  rm -rf libhoudini.zip houdini_temp houdini.rc
+  echo "Libhoudini install script finished."
+
+}
+
+
 install_gapps() {
   prepare_system
   echo "Installing GAPPS ..."
-  wget https://phoenixnap.dl.sourceforge.net/project/opengapps/x86_64/20220503/open_gapps-x86_64-12.0-pico-20220503.zip?viasf=1 -O gapps-11.zip
-  unzip gapps-11.zip 'Core/*' -d gapps-11 && rm gapps-11.zip
-  rm gapps-11/Core/setup*
-  lzip -d gapps-11/Core/*.lz
-  for f in gapps-11/Core/*.tar; do
-    tar -x --strip-components 2 -f "$f" -C gapps-11
+  wget https://phoenixnap.dl.sourceforge.net/projects/litegapps/files/litegapps/x86_64/34/core/2024-10-29/LiteGapps-core-x86_64-14.0-20241029-official.zip?viasf=1 -O gapps-14.zip
+  unzip gapps-14.zip 'Core/*' -d gapps-14 && rm gapps-14.zip
+  rm gapps-14/Core/setup*
+  lzip -d gapps-14/Core/*.lz
+  for f in gapps-14/Core/*.tar; do
+    tar -x --strip-components 2 -f "$f" -C gapps-14
   done
-  adb push gapps-11/etc /system
-  adb push gapps-11/framework /system
-  adb push gapps-11/app /system
-  adb push gapps-11/priv-app /system
-  rm -r gapps-11
+  adb push gapps-14/etc /system
+  adb push gapps-14/framework /system
+  adb push gapps-14/app /system
+  adb push gapps-14/priv-app /system
+  rm -r gapps-14
   touch /data/.gapps-done
 }
 
@@ -66,8 +107,8 @@ install_root() {
   git clone https://gitlab.com/newbit/rootAVD.git
   pushd rootAVD
   sed -i 's/read -t 10 choice/choice=1/' rootAVD.sh
-  ./rootAVD.sh system-images/android-31/default/x86_64/ramdisk.img
-  cp /opt/android-sdk/system-images/android-31/default/x86_64/ramdisk.img /data/android.avd/ramdisk.img
+  ./rootAVD.sh system-images/android-34/default/x86_64/ramdisk.img
+  cp /opt/android-sdk/system-images/android-34/default/x86_64/ramdisk.img /data/android.avd/ramdisk.img
   popd
   echo "Root Done"
   sleep 10
@@ -89,12 +130,15 @@ socat tcp-listen:"5555",bind="$LOCAL_IP",fork tcp:127.0.0.1:"5555" &
 
 gapps_needed=false
 root_needed=false
+houdini_needed=false
 if bool_true "$GAPPS_SETUP" && [ ! -f /data/.gapps-done ]; then gapps_needed=true; fi
 if bool_true "$ROOT_SETUP" && [ ! -f /data/.root-done ]; then root_needed=true; fi
+if bool_true "$HOUDINI_SETUP" && [ ! -f /data/.houdini-done ]; then houdini_needed=true; fi
 
 # Skip initialization if first boot already completed.
 if [ -f /data/.first-boot-done ]; then
   [ "$gapps_needed" = true ] && install_gapps && [ "$root_needed" = false ] && adb reboot
+  [ "$houdini_needed" = true ] && install_libhoudini
   [ "$root_needed" = true ] && install_root
   apply_settings
   copy_extras
@@ -102,9 +146,10 @@ if [ -f /data/.first-boot-done ]; then
 fi
 
 echo "Init AVD ..."
-echo "no" | avdmanager create avd -n android -k "system-images;android-31;default;x86_64"
+echo "no" | avdmanager create avd -n android -k "system-images;android-34;default;x86_64"
 
 [ "$gapps_needed" = true ] && install_gapps && [ "$root_needed" = false ] && adb reboot
+[ "$houdini_needed" = true ] && install libhoudini
 [ "$root_needed" = true ] && install_root
 apply_settings
 copy_extras

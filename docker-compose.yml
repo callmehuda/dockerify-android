@@ -14,9 +14,10 @@ services:
       DNS: one.one.one.one
       RAM_SIZE: 8192
       # Optional screen resolution in WIDTHxHEIGHT format
-      #SCREEN_RESOLUTION: 720x720
+      SCREEN_RESOLUTION: 1600x720
       # Optional screen density (dpi)
-      #SCREEN_DENSITY: 227
+      SCREEN_DENSITY: 227
+      HOUDINI_SETUP: 1
       ROOT_SETUP: 1
       GAPPS_SETUP: 1 # set to 1 to install PICO GAPPS
     privileged: true

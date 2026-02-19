@@ -44,7 +44,7 @@ RUN mkdir /root/.android/ && \
 
 
 # Detect architecture and set environment variable
-RUN yes | sdkmanager --sdk_root=$ANDROID_HOME "emulator" "platform-tools" "platforms;android-31" "system-images;android-31;default;x86_64"
+RUN yes | sdkmanager --sdk_root=$ANDROID_HOME "emulator" "platform-tools" "platforms;android-34" "system-images;android-34;default;x86_64"
 # remove /opt/android-sdk/emulator/crashpad_handler
 RUN rm -f /opt/android-sdk/emulator/crashpad_handler
 # RUN if [ "$(uname -m)" = "aarch64" ]; then \
