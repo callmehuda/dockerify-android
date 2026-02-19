@@ -85,7 +85,7 @@ EOF
 install_gapps() {
   prepare_system
   echo "Installing GAPPS ..."
-  wget https://phoenixnap.dl.sourceforge.net/projects/litegapps/files/litegapps/x86_64/34/core/2024-10-29/LiteGapps-core-x86_64-14.0-20241029-official.zip?viasf=1 -O gapps-14.zip
+  wget 'https://downloads.sourceforge.net/project/litegapps/litegapps/x86_64/34/core/2024-10-29/LiteGapps-core-x86_64-14.0-20241029-official.zip?ts=gAAAAABplqw3v7aVJ5yp7ESECmqyyG0Y7mpsEs1-kLGFwaUNNvbY7vfHYNF_vAXSPqmMxx2vPKbQDPOjl9Sbex1xIaa65FvPtg%3D%3D&use_mirror=master&r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Flitegapps%2Ffiles%2Flitegapps%2Fx86_64%2F34%2Fcore%2F2024-10-29%2FLiteGapps-core-x86_64-14.0-20241029-official.zip%2Fdownload' -O gapps-14.zip
   unzip gapps-14.zip 'Core/*' -d gapps-14 && rm gapps-14.zip
   rm gapps-14/Core/setup*
   lzip -d gapps-14/Core/*.lz
@@ -149,7 +149,7 @@ echo "Init AVD ..."
 echo "no" | avdmanager create avd -n android -k "system-images;android-34;default;x86_64"
 
 [ "$gapps_needed" = true ] && install_gapps && [ "$root_needed" = false ] && adb reboot
-[ "$houdini_needed" = true ] && install libhoudini
+[ "$houdini_needed" = true ] && install_libhoudini
 [ "$root_needed" = true ] && install_root
 apply_settings
 copy_extras
