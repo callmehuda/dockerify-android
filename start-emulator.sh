@@ -39,4 +39,4 @@ if [ -f "$CONFIG_FILE" ]; then
 fi
 
 # Start the emulator with the appropriate ramdisk.img
-/opt/android-sdk/emulator/emulator -avd android -nojni -netfast -writable-system -no-window -no-audio -no-boot-anim -skip-adb-auth -gpu swiftshader_indirect -no-snapshot -no-metrics $RAMDISK -partition-size {PARTITION_SIZE:-4096} -memory ${RAM_SIZE:-4096} -qemu -m ${RAM_SIZE:-4096}
+/opt/android-sdk/emulator/emulator -avd android -nojni -netfast -writable-system -no-window -no-audio -no-boot-anim -skip-adb-auth -gpu swiftshader_indirect -no-snapshot -no-metrics $RAMDISK -partition-size ${PARTITION_SIZE:-4096} -memory ${RAM_SIZE:-4096} -qemu -m ${RAM_SIZE:-4096}
