@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 
 # Install necessary packages
-RUN apt-get update && \
+RUN apt-get update >/dev/null && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         libegl1 \
         openjdk-17-jdk-headless \
@@ -14,18 +14,18 @@ RUN apt-get update && \
         qemu-kvm \
         iproute2 \
         socat \
-        tzdata && \
+        tzdata >/dev/null && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* > /dev/null
+    rm -rf /var/lib/apt/lists/*
 
 # Set up Android SDK
 RUN mkdir -p /opt/android-sdk/cmdline-tools && \
     cd /opt/android-sdk/cmdline-tools && \
-    wget https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip -O cmdline-tools.zip && \
-    unzip cmdline-tools.zip -d latest && \
+    wget -q https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip -O cmdline-tools.zip && \
+    unzip cmdline-tools.zip -d latest >/dev/null && \
     rm cmdline-tools.zip && \
     mv latest/cmdline-tools/* latest/ || true && \
-    rm -rf latest/cmdline-tools || true > /dev/null
+    rm -rf latest/cmdline-tools || true
 
 ENV ANDROID_HOME=/opt/android-sdk
 ENV ANDROID_AVD_HOME=/data
