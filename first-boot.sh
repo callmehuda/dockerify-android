@@ -141,7 +141,7 @@ if [ -f /data/.first-boot-done ]; then
 fi
 
 echo "Init AVD ..."
-echo "no" | avdmanager create avd -n android -k "system-images;android-34;default;x86_64" -c 32768M 
+echo "no" | avdmanager create avd -n android -k "system-images;android-34;default;x86_64" -c 32768
 
 [ "$gapps_needed" = true ] && install_gapps && [ "$root_needed" = false ] && adb reboot
 [ "$houdini_needed" = true ] && install_libhoudini

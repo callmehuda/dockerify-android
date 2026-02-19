@@ -13,7 +13,7 @@ services:
     environment:
       DNS: one.one.one.one
       RAM_SIZE: 8192
-      PARTITION_SIZE: 4096
+      PARTITION_SIZE: 16384
       # Optional screen resolution in WIDTHxHEIGHT format
       SCREEN_RESOLUTION: 1600x720
       # Optional screen density (dpi)
