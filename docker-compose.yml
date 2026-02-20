@@ -15,9 +15,9 @@ services:
       RAM_SIZE: 8192
       PARTITION_SIZE: 32768
       # Optional screen resolution in WIDTHxHEIGHT format
-      SCREEN_RESOLUTION: 720x1600
+      SCREEN_RESOLUTION: 480x854
       # Optional screen density (dpi)
-      SCREEN_DENSITY: 360
+      SCREEN_DENSITY: 256
       HOUDINI_SETUP: 1
       ROOT_SETUP: 0
       GAPPS_SETUP: 0 # set to 1 to install PICO GAPPS

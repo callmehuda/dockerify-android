@@ -144,7 +144,7 @@ echo "Init AVD ..."
 echo "no" | avdmanager create avd -n android -k "system-images;android-34;default;x86_64"
 
 [ "$gapps_needed" = true ] && install_gapps && [ "$root_needed" = false ] && adb reboot
-[ "$houdini_needed" = true ] && install_libhoudini
+[ "$houdini_needed" = true ] && adb reboot && adb wait-for-device && install_libhoudini
 [ "$root_needed" = true ] && install_root
 apply_settings
 copy_extras
