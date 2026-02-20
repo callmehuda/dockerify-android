@@ -18,7 +18,7 @@ services:
       SCREEN_RESOLUTION: 480x854
       # Optional screen density (dpi)
       SCREEN_DENSITY: 256
-      HOUDINI_SETUP: 1
+      HOUDINI_SETUP: 0
       ROOT_SETUP: 0
       GAPPS_SETUP: 0 # set to 1 to install PICO GAPPS
     privileged: true
