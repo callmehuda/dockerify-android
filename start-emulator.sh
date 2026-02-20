@@ -32,8 +32,8 @@ if [ -f "$CONFIG_FILE" ]; then
     HEIGHT=${SCREEN_RESOLUTION#*x}
     update_config "hw.lcd.width" "$WIDTH"
     update_config "hw.lcd.height" "$HEIGHT"
-    update_config "disk.dataPartition.size" "$PARTITION_SIZE"
-    update_config "hw.ramSize" "$RAM_SIZE"
+    #update_config "disk.dataPartition.size" "$PARTITION_SIZE"
+    #update_config "hw.ramSize" "$RAM_SIZE"
   fi
   if [ -n "$SCREEN_DENSITY" ]; then
     update_config "hw.lcd.density" "$SCREEN_DENSITY"
