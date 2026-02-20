@@ -17,7 +17,7 @@ services:
       # Optional screen resolution in WIDTHxHEIGHT format
       SCREEN_RESOLUTION: 720x1600
       # Optional screen density (dpi)
-      #SCREEN_DENSITY: 227
+      SCREEN_DENSITY: 360
       HOUDINI_SETUP: 0
       ROOT_SETUP: 0
       GAPPS_SETUP: 0 # set to 1 to install PICO GAPPS
