@@ -32,6 +32,7 @@ if [ -f "$CONFIG_FILE" ]; then
     HEIGHT=${SCREEN_RESOLUTION#*x}
     update_config "hw.lcd.width" "$WIDTH"
     update_config "hw.lcd.height" "$HEIGHT"
+    update_config "PlayStore.enabled" "true"
     #update_config "disk.dataPartition.size" "$PARTITION_SIZE"
     #update_config "hw.ramSize" "$RAM_SIZE"
   fi
